@@ -9,6 +9,7 @@ module.exports = function (config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
+      require('karma-junit-xray-reporter '),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
@@ -20,7 +21,13 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'kjhtml', 'junitxray'],
+    junitXrayReporter: {
+      metadataFile: 'unit-tests/meta-data.json', // optional path and name of metadataFile
+      outputFile: 'unit-tests/result-output.xml', // optional path and name of the output file
+      suite: '', // suite will become the package name attribute in xml testsuite element
+      xrayIdOnly: false //(default false) set it to true to process only the tests that have xrayId like :XRAY-ID:XRAY-123: in the tests name for e.g ':XRAY-ID:XRAY-123: test to validate params'
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

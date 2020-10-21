@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<%
+        def stats = utils.stats( data )
+%>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="${utils.getSpecClassName( data )}" time="${fmt.toTimeDuration(stats.time)}" tests="1" errors="${stats.errors}" skipped="${stats.skipped}" failures="${stats.failures}">
+<%
+        features.eachFeature { name, result, blocks, iterations, params ->
+%>
+<%
+        def iterationTimes = iterations.collect { it.time ?: 0L }
+        def totalTime = fmt.toTimeDuration( iterationTimes.sum() )
+        def executedIterations = iterations.findAll { it.dataValues || it.errors }
+        def errors = ""
+
+        def problems = executedIterations.findAll { it.errors }
+        if ( problems ) {
+            for ( badIteration in problems ) {
+                if ( badIteration.dataValues ) {
+                    out << '* ' << badIteration.dataValues << '\n'
+                }
+                for ( error in badIteration.errors ) {
+                    errors = errors << error << '\n'
+                }
+            }
+        }
+%>
+    <testcase
+        name="$name"
+        classname="${utils.getSpecClassName( data )}"
+        time="$totalTime"
+        result="$result"
+        errors = "$problems.size"
+    >
+    <![CDATA[\n$errors]]>
+        </testcase>
+<%
+        }
+        %>
+</testsuite>

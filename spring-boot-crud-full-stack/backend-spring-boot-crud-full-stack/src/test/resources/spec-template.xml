@@ -1,39 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <%
-        def stats = utils.stats( data )
+    def date = new Date().format( 'yyyyMMdd-HH:mm:ss.SS' )
+    def os = System.properties['os.name']
 %>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="${utils.getSpecClassName( data )}" time="${fmt.toTimeDuration(stats.time)}" tests="1" errors="${stats.errors}" skipped="${stats.skipped}" failures="${stats.failures}">
+
+<robot rpa="false" generated="$date" generator="Spock on $os">
 <%
-        features.eachFeature { name, result, blocks, iterations, params ->
+    def stats = utils.stats( data )
+    def specIssueId = utils.specAnnotation( data, spock.lang.Issue )?.value()[0]
 %>
+<suite id="s1" name="$specIssueId">
 <%
+    features.eachFeature
+    { name, result, blocks, iterations, params ->
+
         def iterationTimes = iterations.collect { it.time ?: 0L }
         def totalTime = fmt.toTimeDuration( iterationTimes.sum() )
         def executedIterations = iterations.findAll { it.dataValues || it.errors }
         def errors = ""
 
         def problems = executedIterations.findAll { it.errors }
+
         if ( problems ) {
             for ( badIteration in problems ) {
-                if ( badIteration.dataValues ) {
-                    out << '* ' << badIteration.dataValues << '\n'
-                }
+                // if ( badIteration.dataValues ) {
+                //    out << '* ' << badIteration.dataValues << '\n'
+                // }
+
                 for ( error in badIteration.errors ) {
+                    // out << "\nblock kind: " << groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(error)) << "\n"
                     errors = errors << error << '\n'
                 }
             }
         }
-%>
-    <testcase
-        name="$name"
-        classname="${utils.getSpecClassName( data )}"
-        time="$totalTime"
-        result="$result"
-        errors = "$problems.size"
+        def endTime
+    %>
+        <test id="s1-t1"
+          name="$name"
+              classname="${utils.getSpecClassName( data )}"
+            errors = "$problems.size"
     >
-    <![CDATA[\n$errors]]>
-        </testcase>
-<%
+    <%
+        def stepIndex = 0
+        for ( block in blocks ) {
+            stepIndex = stepIndex + 1
+
+            out << "\n<kw name=\"Xray Step $stepIndex\" library=\"${block.kind} ${block.text}\">\n"
+            if ( block.sourceCode ) {
+                block.sourceCode.each { codeLine ->
+                    out << codeLine << '\n'
+                }
+            }
+            endTime = date + totalTime
+    %>
+            <status status="$result" starttime="$date" endtime="$endTime">
+    <%
+            if (problems.size > 0 && block.kind.equalsIgnoreCase("then:")){
+                out << "<![CDATA[\n$errors]]>"
+            }
+    %>
+            </status>
+        </kw>
+    <%
         }
+    %>
+        <tags>
+    <%
+
+            def headersData = utils.specHeaders( data )
+            // out << 'headers size: ' << headersData.size << '\n'
+
+            def writeHeaders = { headers ->
+                if ( headers ) {
+                    headers.each { header ->
+                        header.tags.each { tag ->
+                            //out << '<tag>\n' << groovy.json.JsonOutput.toJson(tag) << '\n<tag>\n'
+                            out << '<tag>\n' << tag.value << '\n<tag>\n'
+                        }
+                    }
+                }
+            }
+            writeHeaders( headersData )
         %>
-</testsuite>
+        </tags>
+
+    <status status="$result" starttime="$date" endtime="$endTime" duration="$totalTime"></status>
+
+    </test>
+<%
+    }
+%>
+</suite>
+</robot>
