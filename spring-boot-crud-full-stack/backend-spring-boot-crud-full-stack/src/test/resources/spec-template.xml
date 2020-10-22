@@ -7,10 +7,21 @@
 <robot rpa="false" generated="$date" generator="Spock on $os">
 <%
     def stats = utils.stats( data )
-    def specIssueId = utils.specAnnotation( data, spock.lang.Issue )?.value()[0]
+    def specIssueId
+    if(utils.specAnnotation( data, spock.lang.Issue )?.value()){
+        specIssueId = utils.specAnnotation( data, spock.lang.Issue )?.value()[0]
+    }
 %>
 <suite id="s1" name="$specIssueId">
 <%
+    def getFeatureAnnotations = {feature, annotation ->
+        def annotations = feature.description.getAnnotation( annotation )?.value()
+
+        if( annotations){
+            specIssueId = annotations[0]
+        }
+    }
+
     features.eachFeature
     { name, result, blocks, iterations, params ->
 
@@ -18,6 +29,9 @@
         def totalTime = fmt.toTimeDuration( iterationTimes.sum() )
         def executedIterations = iterations.findAll { it.dataValues || it.errors }
         def errors = ""
+
+        def featureTestID = getFeatureAnnotations(delegate, spock.lang.Issue)
+        // out << "\nfeature annotation: " << featureAnnotation << "\n"
 
         def problems = executedIterations.findAll { it.errors }
 
@@ -35,7 +49,7 @@
         }
         def endTime
     %>
-        <test id="s1-t1"
+        <test <% if (featureTestID) out << "id=\"$featureTestID\"" %>
           name="$name"
               classname="${utils.getSpecClassName( data )}"
             errors = "$problems.size"
@@ -75,7 +89,7 @@
                     headers.each { header ->
                         header.tags.each { tag ->
                             //out << '<tag>\n' << groovy.json.JsonOutput.toJson(tag) << '\n<tag>\n'
-                            out << '<tag>\n' << tag.value << '\n<tag>\n'
+                            out << '<tag>\n' << tag.value << '\n</tag>\n'
                         }
                     }
                 }
