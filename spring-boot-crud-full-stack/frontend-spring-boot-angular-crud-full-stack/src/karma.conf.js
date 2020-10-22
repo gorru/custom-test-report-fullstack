@@ -9,7 +9,7 @@ module.exports = function (config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
-      require('karma-jira-reporter '),
+      require('karma-jira-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
@@ -21,7 +21,7 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml', 'junitxray'],
+    reporters: ['progress', 'kjhtml', 'karmaJiraReporter'],
     karmaJiraReporter: {
       metadataFile: 'unit-tests/meta-data.json', // optional path and name of metadataFile
       outputFile: 'unit-tests/result-output.xml', // optional path and name of the output file
