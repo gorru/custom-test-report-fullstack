@@ -14,10 +14,11 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it(':XRAY-ID:XRAY-123: should create the app', () => {
+  it('XRAY-ID:XRAY-123 - TAGS: tag1, tag2, tag3 - NAME: should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
+    // .result.extra_spec_data = {testId: 123, release: 'v2.0.5'};
   });
 
   it(`should have as title 'frontend-angular-basic-auth-login-logout'`, () => {
