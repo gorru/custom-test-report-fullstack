@@ -93,3 +93,5 @@ typings/
 .next
 
 .DS_Store
+/.idea/
+/.idea/libraries/

@@ -65,7 +65,7 @@
                     out << codeLine << '\n'
                 }
             }
-            endTime = date + totalTime
+            endTime = (date + totalTime).replace(" seconds", "")
     %>
             <status status="$result" starttime="$date" endtime="$endTime">
     <%
