@@ -2,13 +2,18 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "types": ["cypress"]
+    "types": []
   },
   "files": [
-
+    "main.ts",
+    "polyfills.ts"
   ],
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/*.cy-spec.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
   ]
 }

@@ -14,9 +14,8 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
-
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
-require('core-js/es7/reflect')
+// require('core-js/es/reflect')
+// require('core-js/stable/reflect')
+// require('core-js/features/reflect')
+require('core-js/features/reflect')
 require('cypress-angular-unit-test/support')

@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/frontend-angular-basic-auth-login-logout",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -50,6 +51,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -132,5 +137,8 @@
       }
     }
   },
-  "defaultProject": "frontend-angular-basic-auth-login-logout"
+  "defaultProject": "frontend-angular-basic-auth-login-logout",
+  "cli": {
+    "analytics": "44846113-f077-4278-8317-555b9e3231ff"
+  }
 }
