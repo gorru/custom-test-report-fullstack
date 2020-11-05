@@ -18,6 +18,7 @@ describe('CoursesComponent', () => {
     mount(CoursesComponent);
 
     // use any Cypress command afterwards
+    // @ts-ignore
     cy.contains('All Courses');
   });
 });

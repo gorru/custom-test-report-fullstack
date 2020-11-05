@@ -5,5 +5,10 @@
   "testFiles": ["**/*cy-spec.*", "**/*spec.*"],
   "fixturesFolder": false,
   "includeShadowDom": true,
-  "fileServerFolder": "src"
+  "fileServerFolder": "src",
+  "reporter": "cypress-multi-reporters",
+  "reporterOptions": {
+    "configFile": "reporter-config.json"
+  }
+
 }
