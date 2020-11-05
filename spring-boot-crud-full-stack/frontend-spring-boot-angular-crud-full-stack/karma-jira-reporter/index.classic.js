@@ -3,8 +3,6 @@ var path = require('path');
 var fs = require('fs');
 var builder = require('xmlbuilder');
 let outputFile;
-let testElement;
-let testStatus = "PASS"
 
 Date.prototype.yyyyMMdd = function () {
     var yyyy = this.getFullYear().toString();
@@ -32,6 +30,7 @@ var karmaJiraReporter = function (baseReporterDecorator, config, logger, helper,
 
         var xml;
         var suiteElement;
+        var testElement;
         var pendingFileWritings = 0;
         var fileWritingFinished = function () {
         };
@@ -45,7 +44,7 @@ var karmaJiraReporter = function (baseReporterDecorator, config, logger, helper,
             allMessages.push(msg);
         }];
 
-        var initializeXmlForBrowser = function (browser) {
+        var initliazeXmlForBrowser = function (browser) {
             var timestamp = (new Date()).toISOString().substr(0, 19);
             suiteElement[browser.id] = xml.ele('suite', {
                 id: 0, name: os.hostname()
@@ -129,7 +128,7 @@ var karmaJiraReporter = function (baseReporterDecorator, config, logger, helper,
 
 
         this.onBrowserStart = function (browser) {
-            initializeXmlForBrowser(browser);
+            initliazeXmlForBrowser(browser);
         };
 
         this.onBrowserComplete = function (browser) {
@@ -147,6 +146,11 @@ var karmaJiraReporter = function (baseReporterDecorator, config, logger, helper,
             suite.att('errors', result.disconnected || result.error ? 1 : 0);
             suite.att('failures', result.failed);
             suite.att('time', (result.netTime || 0) / 1000);
+
+            testElement = suite[browser.id].ele('test', {
+                id: xrayId,
+                name: testName
+            });
         };
 
         this.onRunComplete = function () {
@@ -171,59 +175,49 @@ var karmaJiraReporter = function (baseReporterDecorator, config, logger, helper,
         };
 
         this.specSuccess = this.specFailure = function (browser, result) {
-            let isXray;
-            let metadata, xrayId, tags;
-            let testName = name = result.description.replace(result.fullName, "")
+            let isXray = false,
+                matadata = result.description && result.description.split(' - '),
+                xrayId = '',
+                tags = [],
+                name = '';
 
-            if(suiteElement[browser.id].children.length == 0) {
-
-                isXray = false;
-                metadata = result.fullName.replace(result.description, "").split(' - ');
-                xrayId = '';
-                tags = [];
-                // name = '';
-
-                if (metadata && (metadata.length > 1)) {
-                    const xrayIdTag = metadata[1].trim();
-                    isXray = true;
-                    xrayId = metadata[0].split(':')[1].trim();
-                    tags = metadata[1].split(':')[1].split(',');
-                    tags = tags ? tags : [];
-                    // name = metadata[2].split(':')[1].trim();
-                } else {
-                    // name = result.description
-                }
-
-                testElement = suiteElement[browser.id].ele('test', {
-                    id: xrayId,
-                    name: testName
-                });
-
-                let tagsElement = testElement.ele('tags');
-                tags.forEach(tag => {
-                    tagsElement.ele('tag', tag.trim());
-                })
-
-                // Component tests are being identified by xrayId tag (e.g XRAY-123) present in the desc
-                // If the tag is not found then no processing needed
-                if (!isXray) {
-                    if (reporterConfig.xrayIdOnly === true) return;
-                    const NOT_DEFINED = 'Not defined';
-                    xrayId = NOT_DEFINED;
-                }
+            if (matadata && (matadata.length > 1)) {
+                const xrayIdTag = matadata[1].trim();
+                isXray = true;
+                xrayId = matadata[0].split(':')[1].trim();
+                tags = matadata[1].split(':')[1].split(',');
+                tags = tags ? tags : [];
+                name = matadata[2].split(':')[1].trim();
+            } else {
+                name = result.description
             }
 
-            let kwName = result.description;
-            var kwElement = testElement.ele('kw', {
+            // Component tests are being identified by xrayId tag (e.g XRAY-123) present in the desc
+            // If the tag is not found then no processing needed
+            if (!isXray) {
+                if (reporterConfig.xrayIdOnly === true) return;
+                const NOT_DEFINED = 'Not defined';
+                xrayId = NOT_DEFINED;
+                name = result.description;
+            }
+
+            log.debug('isXray: ' + isXray + '| XRAY id tag: ' + xrayId);
+            const describeValue = result.suite.join(' ').replace(/\./g, '_');
+            var testElement = suiteElement[browser.id].ele('kw', {
                 id: xrayId,
-                name: kwName
+                name: name
             });
+
+            let tagsElement = testElement.ele('tags');
+            tags.forEach(tag => {
+                tagsElement.ele('tag', tag);
+            })
 
             let endTime = new Date(timestamp + (result.time || 0));
 
             let status = result.success?'PASS':'FAIL';
 
-            let kwStatusElement = kwElement.ele(
+            let statusElement = testElement.ele(
                 'status',
                 {
                     'status': status,
@@ -231,17 +225,13 @@ var karmaJiraReporter = function (baseReporterDecorator, config, logger, helper,
                     'endtime': endTime.yyyyMMdd()
                 })
             ;
-
             if (!result.success) {
                 result.log.forEach(function (err) {
                     // testElement.ele('failure', {type: ''}, formatError(err));
-                    kwStatusElement.txt(formatError(err));
+                    statusElement.txt(formatError(err));
                 });
             }
 
-            if(!result.success){
-                testElement.ele('status', {'status': status})
-            }
 
         };
 

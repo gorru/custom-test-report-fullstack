@@ -26,7 +26,22 @@ public class SpringBootReactCrudFullStackWithMavenApplicationTests {
 	@IssueIdAnnotation("some Jira test IssueID")
 	@TagsAnnotation({"tag 1", "tag2"} )
 	@DisplayName("Test more descriptive title")
-	public void contextLoads() {
+	public void test1() {
+		CoursesHardcodedService service = new CoursesHardcodedService();
+		int notAlreadyPresentCourseID = 99;
+		String userName = "gorru";
+		String description = "some description";
+		Course course = new Course(notAlreadyPresentCourseID, userName, description);
+
+		service.save(course);
+		assertEquals(6, service.findAll().size());
+	}
+
+	@Test
+	@IssueIdAnnotation("some Jira test IssueID")
+	@TagsAnnotation({"tag 1", "tag2"} )
+	@DisplayName("Test more descriptive title")
+	public void test2() {
 		CoursesHardcodedService service = new CoursesHardcodedService();
 		int notAlreadyPresentCourseID = 99;
 		String userName = "gorru";

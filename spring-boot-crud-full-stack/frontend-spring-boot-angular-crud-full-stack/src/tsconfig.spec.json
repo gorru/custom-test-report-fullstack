@@ -9,10 +9,12 @@
   },
   "files": [
     "test.ts",
-    "polyfills.ts"
+    "polyfills.ts",
+    "../node_modules/cypress/types/cypress-global-vars.d.ts"
   ],
   "include": [
     "**/*.spec.ts",
+    "**/*.cy-spec.ts",
     "**/*.d.ts"
   ]
 }
