@@ -23,10 +23,7 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'kjhtml', 'karmaJiraReporter'],
     karmaJiraReporter: {
-      metadataFile: 'unit-tests/meta-data.json', // optional path and name of metadataFile
-      outputFile: 'unit-tests/result-output.xml', // optional path and name of the output file
-      suite: '', // suite will become the package name attribute in xml testsuite element
-      xrayIdOnly: false //(default false) set it to true to process only the tests that have xrayId like :XRAY-ID:XRAY-123: in the tests name for e.g ':XRAY-ID:XRAY-123: test to validate params'
+      outputDir: 'unit-tests'
     },
     port: 9876,
     colors: true,

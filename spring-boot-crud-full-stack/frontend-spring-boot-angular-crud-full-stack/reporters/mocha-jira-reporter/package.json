@@ -1,0 +1,123 @@
+{
+  "_args": [
+    [
+      "mocha-jira-reporter@1.2.7",
+      "/Users/giancarloorru/IdeaProjects/custom-test-report-fullstack/spring-boot-crud-full-stack/frontend-spring-boot-angular-crud-full-stack"
+    ]
+  ],
+  "_from": "mocha-jira-reporter",
+  "_id": "mocha-jira-reporter@1.2.7",
+  "_inBundle": false,
+  "_integrity": "sha512-G+U+G1XbeNvEWiAy1nSKyLnt8ujpSl0U8UslmDZSWNZaTlDmOHA1sZHahi6g587IFlutIUgRbq4HToZQwFYaqw==",
+  "_location": "/mocha-jira-reporter",
+  "_phantomChildren": {
+    "bluebird": "3.5.3",
+    "body-parser": "1.18.3",
+    "colors": "1.1.2",
+    "connect": "3.6.6",
+    "di": "0.0.1",
+    "dom-serialize": "2.2.1",
+    "flatted": "2.0.0",
+    "glob": "7.1.3",
+    "graceful-fs": "4.1.15",
+    "http-proxy": "1.17.0",
+    "is-extglob": "2.1.1",
+    "isbinaryfile": "3.0.3",
+    "log4js": "4.1.0",
+    "minimatch": "3.0.4",
+    "optimist": "0.6.1",
+    "picomatch": "2.2.2",
+    "qjobs": "1.2.0",
+    "range-parser": "1.2.0",
+    "rimraf": "2.6.3",
+    "safe-buffer": "5.1.2",
+    "socket.io": "2.1.1",
+    "tmp": "0.0.33",
+    "useragent": "2.3.0"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "mocha-jira-reporter",
+    "name": "mocha-jira-reporter",
+    "escapedName": "mocha-jira-reporter",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_spec": "mocha-jira-reporter",
+  "_where": "/Volumes/Shared-Data/Sviluppo/spring-boot-angular-fullstack-examples/spring-boot-crud-full-stack/frontend-spring-boot-angular-crud-full-stack",
+  "author": {
+    "name": "Giancarlo Orrù",
+    "email": "giancarlo.orru@gmail.com"
+  },
+  "bundleDependencies": false,
+  "contributors": [
+    {
+      "name": "All contributors in karma-junit-reporter and karma-junit-xray-reporter since we took code from there and modified to create this package"
+    },
+    {
+      "name": "Arsalan Siddiqui",
+      "email": "robotics1@gmail.com"
+    },
+    {
+      "name": "James Landy",
+      "email": "james.james.landy@philips.com"
+    }
+  ],
+  "dependencies": {
+    "path": "^0.12.7",
+    "path-is-absolute": "^1.0.0",
+    "xmlbuilder": "12.0.0",
+    "debug": "^4.1.1",
+    "lodash": "^4.17.15"
+  },
+  "deprecated": false,
+  "description": "A Karma plugin. Report results in junit xml format with XRay Id(if present)",
+  "devDependencies": {
+    "chai": "4.2.0",
+    "child_process": "^1.0.2",
+    "coveralls": "3.1.0",
+    "eslint": "7.13.0",
+    "eslint-config-defaults": "9.0.0",
+    "mocha": "3.5.3",
+    "mocha-lcov-reporter": "1.3.0",
+    "nyc": "15.1.0",
+    "sinon": "7.3.2",
+    "standard-version": "8.0.2"
+  },
+  "engines": {
+    "node": ">= 12"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "junit",
+    "mocha-plugin",
+    "mocha-reporter"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "mocha-jira-reporter",
+  "peerDependencies": {
+    "mocha": ">=3.1.2"
+  },
+  "repository": {},
+  "scripts": {
+    "test": "grunt",
+    "test-with-coverage": "nyc --reporter=text mocha tests/reporter.spec.js"
+  },
+  "version": "1.2.7",
+  "husky": {
+    "hooks": {
+      "lint": "lint",
+      "test": "test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}

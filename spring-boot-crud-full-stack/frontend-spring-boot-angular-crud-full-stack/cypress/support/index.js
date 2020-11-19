@@ -19,3 +19,6 @@
 // require('core-js/features/reflect')
 require('core-js/features/reflect')
 require('cypress-angular-unit-test/support')
+require('cypress-terminal-report/src/installLogsCollector')();
+
+// MochaJiraReporterUtilities = require('../../reporters/mocha-jira-reporter/index')

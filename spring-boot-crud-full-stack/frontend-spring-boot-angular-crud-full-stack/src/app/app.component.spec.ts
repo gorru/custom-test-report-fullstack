@@ -2,7 +2,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
-describe('XRAY-ID:XRAY-123 - TAGS: tag1, tag2, tag3 - NAME: AppComponent', () => {
+describe('NAME: AppComponent - ISSUE-ID:XRAY-123 - TAGS: tag1, tag2, tag3', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -14,7 +14,7 @@ describe('XRAY-ID:XRAY-123 - TAGS: tag1, tag2, tag3 - NAME: AppComponent', () =>
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('NAME: should create the app - ISSUE-ID:some ID', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
